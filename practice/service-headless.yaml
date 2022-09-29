@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-headless
+  namespace: dev
+spec:
+  selector:
+    app: nginx-pod
+  clusterIP: None # 將clusterIP設置為None，即可創建headless Service
+  type: ClusterIP
+  ports:
+  - port: 80    
+    targetPort: 80

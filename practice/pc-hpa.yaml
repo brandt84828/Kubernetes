@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: pc-hpa
+  namespace: dev
+spec:
+  minReplicas: 1  #最小pod數量
+  maxReplicas: 10 #最大pod數量
+  targetCPUUtilizationPercentage: 3 # CPU使用率指標
+  scaleTargetRef:   # 指定要控制的nginx訊息
+    apiVersion:  /v1
+    kind: Deployment
+    name: nginx

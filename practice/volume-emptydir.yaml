@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-emptydir
+  namespace: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.17.1
+    ports:
+    - containerPort: 80
+    volumeMounts:  # 將logs-volume掛載到nginx容器中，對應的目錄為 /var/log/nginx
+    - name: logs-volume
+      mountPath: /var/log/nginx
+  - name: busybox
+    image: busybox:1.30
+    command: ["/bin/sh","-c","tail -f /logs/access.log"] # 初始命令，動態讀取指定檔中內容
+    volumeMounts:  # 將logs-volume 掛在到busybox容器中，對應的目錄為 /logs
+    - name: logs-volume
+      mountPath: /logs
+  volumes: # 聲明volume， name為logs-volume，類型為emptyDir
+  - name: logs-volume
+    emptyDir: {}
